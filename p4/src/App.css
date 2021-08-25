@@ -1,0 +1,60 @@
+#logout {
+  float: right;
+  margin-top: 50px;
+  margin-right: 50px;
+}
+h1 {
+  margin-left: 300px;
+  float: left;
+
+}
+.App-header {
+  overflow: auto;
+  border-bottom-style: solid;
+}
+#left {
+  float: left;
+  width: 700px;
+  border-right-style: solid;
+  height: 100%;
+}
+#chart {
+  width: 650px;
+  height: 400px;
+  margin-top: 10px;
+  background-color: grey;
+}
+.GridBox {
+  padding: 5px;
+  grid-template-columns: auto auto auto auto;
+}
+#GridBoxBig {
+  padding: 20px;
+  overflow:hidden;
+ 
+   
+}
+.gridContainer {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 10px;
+}
+.gridItem {
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+.gh {
+  background-color: grey;
+}
+.geo {
+  background-color: lightgrey;
+}
+#right {
+  margin: 10px;
+}
+.gOdd {
+  background-color: grey;
+  max-width: 400px;
+}
