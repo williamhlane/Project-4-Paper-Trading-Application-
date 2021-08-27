@@ -1,11 +1,13 @@
 const GandS = () => {
-
+    //This is the graph and search componite. Here you will be able to search for a stock and view the graph.
+    let stockname = "BHP - BHP Group Limited";
 
     return (
         <div id="left">
-        <div> BHP - BHP Group Limited  <button>Buy</button> <button>Sell</button></div>
-        <div><input type="search" style={{borderRadius: 10}} /></div>
-        <canvas id="chart" style={{ }}>
+            <input className="search" type="search" />
+        <div> {stockname}  <button className="buy">Buy</button> <button className="sell">Sell</button></div>
+        
+        <canvas id="chart">
 
         </canvas>
         </div>

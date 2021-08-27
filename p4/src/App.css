@@ -17,6 +17,7 @@ h1 {
   width: 700px;
   border-right-style: solid;
   height: 100%;
+  font-size: 20px;
 }
 #chart {
   width: 650px;
@@ -48,8 +49,11 @@ h1 {
 .gh {
   background-color: grey;
 }
-.geo {
+.gridOdd {
   background-color: lightgrey;
+}
+.gridEven {
+  background-color: white;
 }
 #right {
   margin: 10px;
@@ -57,4 +61,55 @@ h1 {
 .gOdd {
   background-color: grey;
   max-width: 400px;
+}
+#login {
+  margin: 30px;
+}
+#login label {
+  display: block;
+  color:rgba(0, 0, 0, 0.8);
+  font-weight: bold;
+
+
+}
+#login input {
+  margin-bottom: 5px;
+  margin-top: 5px;
+  display: block;
+}
+.buy {
+  margin: 10px;
+  background-color: blue;
+  font-size: 20px;
+  border-style: none;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+.sell {
+  margin: 10px;
+  background-color: red;
+  font-size: 20px;
+  border-style: none;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+.okay {
+  margin: 10px;
+  background-color: green;
+  font-size: 20px;
+  border-style: none;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+}
+.search {
+  display: block;
+  margin: 10px;
+  border-radius: 10px;
+}
+.amount {
+  margin: 10px;
+  border-radius: 10px;
 }
