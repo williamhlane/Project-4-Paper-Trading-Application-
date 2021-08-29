@@ -1,5 +1,4 @@
 const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected }) => {
-    // setRadioSelected={setRadioSelected} 
     const Radio = ({id, setRadioSelected}) => {
 
         return (
