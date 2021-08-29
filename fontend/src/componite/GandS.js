@@ -10,9 +10,10 @@ const GandS = () => {
     const [endDataDate, setEndDataDate] = useState('XX-XX-XXXX');//This the llast date that has information available.
     const [chartLabels, setChartLabel] = useState();//This useState will store the chart label information.
     const [chartData, setChartData] = useState();//This use state will store the chart data information.
-
+    const [stockSym, setStockSym] = useState();//This use state will store the stocksymbol
     //This is the graph and search componite. Here you will be able to search for a stock and view the graph.
     const getStockHistory = async (stockSymbol) => {
+        setStockSym(setStockSym);
         //We want stock symbols only, no spaces, all spaces will be removed if one is entered by mistake
         stockSymbol = stockSymbol.replace(/ /g, "");
         if (stockSymbol.length === 0) {
@@ -70,7 +71,7 @@ const GandS = () => {
     let llabel = "";
     if (stockName === "Search for a stock using the symbol") {
         llabel = `${stockName}.`;
-    } else if(stockName === `Error, loading ${stockSymbol} please try again.`) {
+    } else if(stockName === `Error, loading ${stockSym} please try again.`) {
         llabel = `${stockName}`;
     } else {
         llabel = `Closing prices per day for ${stockName}.`;
