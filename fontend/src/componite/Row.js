@@ -1,16 +1,16 @@
-const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected }) => {
-    const Radio = ({id, setRadioSelected}) => {
+const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected, noRadio }) => {
+    const Radio = ({ id, setRadioSelected }) => {
 
         return (
-            <input type="radio" name="a" value={id} onChange={() => setRadioSelected(id)} />
+            <input type="radio" name="a" value={id} onChange={() => setRadioSelected(stock)} />
         )
     }
 
     let className;
     if (oddeven == null) {
         className = "gridItem gh";
-    } else if(oddeven % 2 === 0) {
-        className =  "gridItem gridEven"
+    } else if (oddeven % 2 === 0) {
+        className = "gridItem gridEven"
     } else {
         className = "gridItem gridOdd"
     }
@@ -19,8 +19,8 @@ const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected }) => {
             <span className={className}>{stock}</span>
             <span className={className}>{quantity}</span>
             <span className={className}>{value}</span>
-            <span className={className}> 
-                {oddeven == null ? "Buy/Sell" : <Radio setRadioSelected={setRadioSelected} id={id} />}
+            <span className={className}>
+                {noRadio === false  ? <Radio setRadioSelected={setRadioSelected} id={id} /> : noRadio}
             </span>
         </>
     )

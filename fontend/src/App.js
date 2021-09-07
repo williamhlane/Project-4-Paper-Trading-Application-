@@ -9,7 +9,8 @@ import Login from './componite/Login';
 import { useState } from 'react';
 
 
-let loggedIn = 1;
+
+let loggedIn = 0;
 function App() {
   const [buySellStock, setBuySellStock] = useState(null);
   const setBuySellStock2 = (stockName, doWhat, amount) => {

@@ -20,7 +20,7 @@ const GandS = () => {
             //An error needs to be sent to the user prompting them to fill out the text box to search.
             alert("Nothing was entered in the search box.");
         } else {
-            const apiKey = "";
+            const apiKey = "ck1t2okg5ZL3hdWRAHzH";
             //When the user they will hit enter and it will replace any stock name with this until the promise returns good or bad.
             setStockName("Loading please wait.");
             await fetch(`https://www.quandl.com/api/v3/datasets/WIKI/${stockSymbol}.json?start_date=${start}&end_date=${end}&api_key=${apiKey}`)
