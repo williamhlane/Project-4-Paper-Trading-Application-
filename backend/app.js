@@ -17,16 +17,18 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin:["http://127.0.0.1:3000"],
+  origin:["http://localhost:3000"],
   methods:["GET", "POST", "PUT", "DELETE"],
-  credential: true,
+  credential: true
 }))
 app.use(session({
-  
+  resave: false,
+  saveUninitialized: false,
+  secret: "bla",
 
 
 }))
