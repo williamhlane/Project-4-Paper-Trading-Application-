@@ -42,7 +42,6 @@ const GandS = () => {
                     //Use useState for the label and graph array
                     setChartLabel(labels);
                     setChartData(stockData);
-                    //Remove unwanted text from the stockName
                     setStockName(data.dataset.name.replace(/Prices, Dividends, Splits and Trading Volume/, ''));
                     //Store the dates that we have information for using use state so it can be shown to the end user.
                     setStartDataDate(data.dataset.oldest_available_date);
@@ -54,7 +53,6 @@ const GandS = () => {
                 })
         }
     }
-    //This is the options object for the graph.
     const options = {
         maintainAspectRatio: true,
         scales: {

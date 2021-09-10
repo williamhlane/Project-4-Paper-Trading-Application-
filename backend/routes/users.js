@@ -77,7 +77,72 @@ router.post('/login', (req, res) => {
 
 
 });
-
+router.get('/deleteuser/:ex', (req, res, next) => {
+  if (req.session.authenticated && (req.session.username === req.params.ex)) {
+    users.destroy({
+      where: {
+        username: `${req.params.ex}`
+      }
+    }).then((done) => {
+      console.log(done);
+      res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.write(`{ "results" : "DONE" }`);
+      res.end();
+    }).catch((error) => {
+      console.log(error);
+      res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+      res.setHeader('Access-Control-Allow-Methods', 'GET');
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+      res.write(`{ "results" : "${error}" }`);
+      res.end();
+    });
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.write(`{ "results" : "Not Authorized" }`);
+    res.end();
+  }
+})
+router.get('/resetuser/:ex', (req, res, next) => {
+  if (req.session.authenticated && (req.session.username === req.params.ex)) {
+    users.update({ stocksOwned: null, balance: 8000 },
+      {
+        where: {
+          username: `${req.params.ex}`
+        }
+      })
+      .then((done) => {
+        console.log(done);
+        res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.write(`{ "results" : "DONE" }`);
+        res.end();
+      }).catch((error) => {
+        console.log(error);
+        res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.write(`{ "results" : "${error}" }`);
+        res.end();
+      });
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.write(`{ "results" : "Not Authorized" }`);
+    res.end();
+  }
+})
 router.post('/create', async (req, res, next) => {
 
   await users.count({ where: { 'username': req.body.createusername } }).then((count) => {
