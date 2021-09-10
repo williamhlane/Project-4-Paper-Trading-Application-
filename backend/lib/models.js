@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./databaseconnect');
 //This is the users table. It has the username password and the Balance the person has///
-const User = db.define('Users', {
+const Users = db.define('Users', {
     username: {
         type: DataTypes.STRING,
         allowNull: false
@@ -21,3 +21,5 @@ const User = db.define('Users', {
 },{
     /////////////////////////////////
 });
+db.sync();
+module.exports.Users = Users;

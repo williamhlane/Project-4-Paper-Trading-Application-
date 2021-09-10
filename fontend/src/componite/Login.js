@@ -4,56 +4,77 @@ const Login = () => {
     /*This is the log in and create user componite*/
     const login = (e) => {
         e.preventDefault();
-        //const username = document.getElementById('logInUserName').value;
-        //const password = document.getElementById('logInPassword').value;
-        fetch('http://127.0.0.1:3001/users/login', {
-                method: 'POST',
-                mode: 'cors',
-                //credentials: 'include',
-        }).then((res) => {
-            return res.json();
-        }).then((res) => {
-            
+        let username = document.getElementById('loginusername').value;
+        let password = document.getElementById('loginpassword').value;
+        const body = `{ "loginusername" : "${username}", "loginpassword" : "${password}" }`;
+        fetch('http://localhost:3001/users/login', {
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include',//not needed not cookie yet
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        }).then(res => res.json())
+        .then((res) => {
+            if (res.status !== "success") {
+                alert(`Error 1 : ${res.status}.`)
+            } else {
+                alert(`The user ${res.username} has been successfully created.`);
+            }
+            document.getElementById('loginusername').value = '';
+            document.getElementById('loginpassword').value = '';
+        }).catch((error) => {
+            alert(`Error 2 : ${error}.`)
         })
 
     }
 
     const createUser = (e) => {
         /*This is the log in and create user componite*/
-        
-            e.preventDefault();
-            const username = document.getElementById('createusername').value;
-            const password = document.getElementById('createpassword').value;
-            const body = `{ "createusername" : "${username}", "createpassword": "${password}" }`;
-            console.log(body);
-            fetch('http://localhost:3001/users/create', {
-                    method: 'POST',
-                    mode: 'cors',
-                    //credentials: 'include',//not needed not cookie yet
-                    headers: {
-                        'Accept' : 'application/json',
-                        'Content-Type' : 'application/json',
-                    },
-                    body: body,
-            }).then((res) => {
-                return res.json();
-            }).then((res) => {
-                console.log(JSON.stringify(res));
-            })
-    
-        
+        e.preventDefault();
+        let username = document.getElementById('createusername').value;
+        let password = document.getElementById('createpassword').value;
+        const body = `{ "createusername" : "${username}", "createpassword": "${password}" }`;
+        console.log(body);
+        fetch('http://localhost:3001/users/create', {
+            method: 'POST',
+           // mode: 'cors',
+            //credentials: 'include',//not needed not cookie yet
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: body,
+        }).then((res) => {
+            return res.json();
+        }).then((res) => {
+            if (res.status !== "success") {
+                alert(`Error : ${res.status}.`)
+            } else {
+                alert(`The user ${res.username} has been successfully created.`);
+            }
+            document.getElementById('createusername').value = '';
+            document.getElementById('createpassword').value = '';
+        }).catch((error) => {
+            alert(`Error ${error}.`)
+        })
     }
     return (
         <div id='login'>
             <label>Log In:</label>
+     
             <form onSubmit={login}>
-                <label>Username: </label><input type="text" name="loginusername" id='logInUserName' />
-                <label>Password:</label><input type="password" name="loginpassword" id='logInPassword' />
+                <label>Username: </label><input type="text" name="loginusername" id='loginusername' />
+                <label>Password:</label><input type="password" name="loginpassword" id='loginpassword' />
                 <input type="submit" />
             </form>
+            
+
             <hr />
             <label>Create User:</label>
-            <form  onSubmit={createUser}>
+            <form onSubmit={createUser}>
                 <label>Username: </label><input type="text" name="createusername" id="createusername" />
                 <label>Password:</label><input type="password" name="createpassword" id="createpassword" />
                 <input type="submit" />

@@ -13,20 +13,26 @@ import { useState } from 'react';
 let loggedIn = 0;
 function App() {
   const [buySellStock, setBuySellStock] = useState(null);
+  const [appState, setAppState] = useState();
+  if (typeof (appState) !== 'undefined') {
+    console.log('appState is defined');
+  } else {
+    console.log('appState is not defined');
+  }
   const setBuySellStock2 = (stockName, doWhat, amount) => {
 
 
   }
- 
+
   return (
     <div className="App">
       <header className="App-header" >
-         <h1> Paper Trader</h1>
-         { loggedIn ? <div id='logout'>Welcome, William   <a  href='/'>Logout</a></div> : <div id='logout'>Please log in below.</div> }
-          
+        <h1> Paper Trader</h1>
+        {loggedIn ? <div id='logout'>Welcome, William   <a href='/'>Logout</a></div> : <div id='logout'>Please log in below.</div>}
+
       </header>
-     { loggedIn ? <GandS /> : <Login /> }
-     { loggedIn ? <Portfolio /> : null } 
+      {loggedIn ? <GandS /> : <Login />}
+      {loggedIn ? <Portfolio /> : null}
     </div>
   );
 }
