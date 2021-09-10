@@ -1,6 +1,6 @@
 
 
-const Login = () => {
+const Login = ({setAppState}) => {
     /*This is the log in and create user componite*/
     const login = (e) => {
         e.preventDefault();
@@ -18,13 +18,11 @@ const Login = () => {
             body: body,
         }).then(res => res.json())
         .then((res) => {
-            if (res.status !== "success") {
-                alert(`Error 1 : ${res.status}.`)
+            if (res.authenticated === "true") {
+                setAppState(JSON.parse(JSON.stringify(res)));
             } else {
-                alert(`The user ${res.username} has been successfully created.`);
+                alert(`Error: ${res.status}`);
             }
-            document.getElementById('loginusername').value = '';
-            document.getElementById('loginpassword').value = '';
         }).catch((error) => {
             alert(`Error 2 : ${error}.`)
         })

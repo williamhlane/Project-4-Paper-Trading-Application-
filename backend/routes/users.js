@@ -1,16 +1,33 @@
 var express = require('express');
+const { session } = require('passport');
 var router = express.Router();
 var db = require('../lib/databaseconnect');
 var models = require('../lib/models');
 var users = models.Users;
-
-
-
-
-/*This is the log in route, it */
+//This get request is used by fetch on page load to check if the user is logged in or not.
+router.get('/login', (req, res, next) => {
+  if (req.session) {
+    console.log(req.session);
+    res.send(`{ "authenticated" : "${req.session.authenticated}", "username" : "${req.session.username}" }`);
+  } else {
+    res.send(`{ "authenticated" : "false", "username" : "null" }`);
+  }
+});
+//This route is called using fetch by a function in app.js
+router.get('/logout', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  req.session.destroy((error) => {
+    if (typeof (error) == 'undefined') { console.log("Error: " + error); }
+  });
+  res.write(`{ "status" : "Logged Out"}`);
+  res.end();
+});
+/*This is the log in route, it is called by fetch in the log in componite.*/
 router.post('/login', (req, res) => {
   let returnResponce = '';
-
   users.findOne({
     where:
     {
@@ -27,12 +44,13 @@ router.post('/login', (req, res) => {
         }
         req.session.authenticated = "true";
         req.session.username = req.body.loginusername;
+        console.log(req.session.authenticated + req.session.username + req.session.viewCount);
         res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
         res.setHeader('Access-Control-Allow-Methods', 'POST');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
-       res.write(`{ "status" : "Logged In", "username" : "${req.session.username}" } `);
-       res.end();
+        res.send(`{ "authenticated" : "${req.session.authenticated}", "username" : "${req.session.username}" }`);
+        res.end();
 
       } else {
         res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
@@ -51,7 +69,9 @@ router.post('/login', (req, res) => {
       res.end();
 
     }
-  });
+  }).catch((error) => {
+    console.log(`Error 1: ${error}`);
+  })
 
 
 

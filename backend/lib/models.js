@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const db = require('./databaseconnect');
-//This is the users table. It has the username password and the Balance the person has///
+//This is the users table. It has the username password and the Balance the person has and the stocks owned as JSON///
 const Users = db.define('Users', {
     username: {
         type: DataTypes.STRING,
