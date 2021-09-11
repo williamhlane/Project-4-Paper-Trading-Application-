@@ -5,15 +5,23 @@ var db = require('../lib/databaseconnect');
 var models = require('../lib/models');
 var users = models.Users;
 //This get request is used by fetch on page load to check if the user is logged in or not.
+
 router.get('/login', (req, res, next) => {
   if (req.session) {
-    console.log(req.session);
-    res.send(`{ "authenticated" : "${req.session.authenticated}", "username" : "${req.session.username}" }`);
+    users.findOne({
+      where: { username: `${req.session.username}` }
+    }).then((data) => {
+
+      res.send(`{ "authenticated" : "${req.session.authenticated}", "username" : "${req.session.username}", 
+      "balance" : "${data.balance}", "portfolio" : "${data.stocksOwned}" }`);
+    }).catch((error) => {
+
+    })
   } else {
     res.send(`{ "authenticated" : "false", "username" : "null" }`);
   }
 });
-//This route is called using fetch by a function in app.js
+//This route is called using fetch by a function in app.js to log the user out
 router.get('/logout', (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
   res.setHeader('Access-Control-Allow-Methods', 'GET');

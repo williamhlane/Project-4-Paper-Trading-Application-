@@ -1,8 +1,8 @@
-const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected, noRadio }) => {
-    const Radio = ({ id, setRadioSelected }) => {
+const Row = ({ stock, quantity, value, id, oddeven, setStockSelected, noRadio, stockSelected }) => {
+    const Radio = ({ id, setStockSelected, checked }) => {
 
         return (
-            <input type="radio" name="a" value={id} onChange={() => setRadioSelected(stock)} />
+            <input type="radio" name="a" value={id} checked={checked} onChange={() => setStockSelected(stock) } />
         )
     }
 
@@ -20,7 +20,7 @@ const Row = ({ stock, quantity, value, id, oddeven, setRadioSelected, noRadio })
             <span className={className}>{quantity}</span>
             <span className={className}>{value}</span>
             <span className={className}>
-                {noRadio === false  ? <Radio setRadioSelected={setRadioSelected} id={id} /> : noRadio}
+                {noRadio === false  ? <Radio setStockSelected={setStockSelected} id={id} checked={(stockSelected === stock)} /> : noRadio}
             </span>
         </>
     )
