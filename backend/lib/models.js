@@ -11,7 +11,7 @@ const Users = db.define('Users', {
         allowNull: false
     },
     balance:{
-        type: DataTypes.BIGINT,
+        type: DataTypes.FLOAT,
         allowNull: true
     },
 },{

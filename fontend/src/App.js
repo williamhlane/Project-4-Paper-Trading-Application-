@@ -6,17 +6,14 @@ import Portfolio from './componite/PortFolio';
 //This is the log in form, it will be shown if the user is not logged in.
 import Login from './componite/Login';
 import { useState } from 'react';
-//import { useCookies } from "react-cookie";
 /////////////////////////////////////////////////////////////
 /////////TODO LIST//IN ORDER//DELETE this AFTER DEVELOPMENT IS DONE
 //NEED TO Set value of stock under the list 
 //NEED TO BUY AND SELL STOCKS
-//DELETE COOKIE IS NOT WORKING
 //NEED TO BE ABLE TO RESET USERS//done not tested
 ////////////////////////////////////////////////////////////
 let loggedIn = 0;
 let loggedInAs;
-let balance;
 function App() {
   //const [cookies, setCookie, removeCookie] = useCookies(["connect.sid"]);//Delete cookie is not working on logout
   const [appState, setAppState] = useState();//appState is an object that store the logged authenticate and username.
@@ -42,7 +39,6 @@ function App() {
       //An error needs to be sent to the user prompting them to fill out the text box to search.
       alert("Nothing was entered in the search box.");
     } else {
-      
       //When the user they will hit enter and it will replace any stock name with this until the promise returns good or bad.
       setStockName("Loading please wait.");
       setStockSelected(stockSymbol);
@@ -80,9 +76,6 @@ function App() {
   if (typeof (appState) !== 'undefined') {
     loggedIn = (appState.authenticated === "true");
     loggedInAs = appState.username;
-    balance = appState.balance;
-    //console.log(JSON.stringify(appState));
-    
   } else {
     fetch('http://localhost:3001/users/login', {
       method: 'GET',
@@ -101,14 +94,12 @@ function App() {
     });
   }
   const logOut = () => {
-
-    //removeCookie('connect.sid');//Cookie is not getting deleted need to research why.
     fetch('http://localhost:3001/users/logout', { mode: 'cors', credentials: 'include' })
       .then(() => { window.location.reload(); })
       .catch((error) => { console.log(`Log out error: ${error}`) })
   }
   const restUser = () => {
-    fetch(`http://localhost:3001/users/reset/${loggedInAs}`, {
+    fetch(`http://localhost:3001/users/resetuser/${loggedInAs}`, {
       method: 'GET',
       mode: 'cors',
       credentials: 'include',
@@ -160,7 +151,7 @@ function App() {
         stockName={stockName} getStockHistory={getStockHistory} setStart={setStart} setEnd={setEnd}
         startDataDate={startDataDate} endDataDate={endDataDate} stockSym={stockSym} /> : <Login setAppState={setAppState} stockSym={stockSym} />}
       {loggedIn ? <Portfolio setStockSelected={setStockSelected} 
-                  stockSelected={stockSelected} balance={balance} getStockHistory={getStockHistory} 
+                  stockSelected={stockSelected} balance={appState.balance} getStockHistory={getStockHistory} 
                   stocksObject={appState.stocksOwned} apiKey={apiKey} loggedInAs={loggedInAs} stockSelectedPrice={stockSelectedPrice} /> 
                   : null}
     </div>

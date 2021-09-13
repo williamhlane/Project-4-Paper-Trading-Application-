@@ -116,7 +116,13 @@ router.get('/deleteuser/:ex', (req, res, next) => {
         username: `${req.params.ex}`
       }
     }).then((done) => {
-      console.log(done);
+      Portflio.destroy({
+        where: {
+          username: `${req.params.ex}`
+        }
+      }).catch((error) => {
+        console.log(error);
+      })
       res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
       res.setHeader('Access-Control-Allow-Methods', 'GET');
       res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -150,7 +156,13 @@ router.get('/resetuser/:ex', (req, res, next) => {
         }
       })
       .then((done) => {
-        console.log(done);
+        Portflio.destroy({
+          where: {
+            username: `${req.params.ex}`
+          }
+        }).catch((error) => {
+          console.log(error);
+        })
         res.setHeader('Access-Control-Allow-Origin', ['http://localhost:3000']);
         res.setHeader('Access-Control-Allow-Methods', 'GET');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');

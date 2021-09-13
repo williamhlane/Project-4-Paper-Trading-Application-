@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Row from './Row';
 const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, apiKey, loggedInAs, stockSelectedPrice }) => {
-    const [buySell, setBuySell] = useState();
+    const [buySell, setBuySell] = useState('buy');
     const [buySellAmount, setBuySellAmount] = useState();
     const [portforlioOb, setPortforlioOb] = useState([{ stockName: "Loading", amountOwned: "0", value: "0" }]);
     const [fetched, setFetched] = useState();
+    const [userMessages, setUserMessages ] = useState();
     const onSub = (e) => {
         e.preventDefault();
     }
@@ -39,6 +40,8 @@ const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, 
                         }).then((data) => {
                             let value = JSON.parse(JSON.stringify(data));
                             tempPortfolioBuilder({ stockName: `${res[i].stockName}`, amountOwned: `${res[i].amountOwned}`, value: `${value.dataset.data[0][4]}` }, res.length);
+                        }).catch((error) => {
+                            console.log(error);
                         })
                 }
 
@@ -50,6 +53,7 @@ const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, 
     }
     if (fetched !== "true") {
         loadPortforlio();
+       
     }
     let amountOwned;
     // portforlioOb.map((stock, index) => {
@@ -59,6 +63,7 @@ const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, 
         }
     }
     const buySellStock = async () => {
+
         const body = `{ "username" : "${loggedInAs}", "buySell" : "${buySell}", 
         "stockSelected" : "${stockSelected}", "stockSelectedPrice" : "${stockSelectedPrice}", "buySellAmount" : "${buySellAmount}" }`;
         await fetch('http://localhost:3001/buysell', {
@@ -71,13 +76,15 @@ const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, 
             },
             body: body,
         }).then((res) => {
-                return res.json()
-                //////alert your stock has been bought or sold.
-            
+                return res.json()               
+        }).then((res) => {
+            let responce = JSON.parse(JSON.stringify(res));
+            setTimeout(() => { window.location.reload();  }, 0);
+            setUserMessages(responce.status);
         })
        loadPortforlio();
     }
-
+    setTimeout(() => { if(typeof(balance) === 'undefined') { window.location.reload(); } }, 0);
     return (
         <div id="right">
             <h4>Portfolio</h4>
@@ -91,14 +98,14 @@ const Portfolio = ({ setStockSelected, stockSelected, balance, getStockHistory, 
                          light grey. If no values are past in then the row will default to grey */}
 
                         {portforlioOb.map((stock, index) => (
-                            <Row key={index} stock={stock.stockName} quantity={stock.amountOwned} value={stock.value} oddeven={index} id={index} setStockSelected={setStockSelected} noRadio={false} stockSelected={stockSelected} getStockHistory={getStockHistory} />
+                            <Row key={index} stock={stock.stockName} quantity={stock.amountOwned} value={stock.value} oddeven={index + 1} id={index} setStockSelected={setStockSelected} noRadio={false} stockSelected={stockSelected} getStockHistory={getStockHistory} />
                         ))}
                         <Row stock="Balance" quantity="" value={balance} oddeven="1" id="4" noRadio="" />
                     </div>
                     <div>
+                    <span style={{ display: "block" }}><strong>Messages:</strong>{userMessages}</span>
                         <span style={{ display: "block" }}><strong>Stock</strong>: {stockSelected} you have {amountOwned} shares at ${stockSelectedPrice} per share.</span>
                         <span style={{ display: "block" }}><strong>MS</strong>: <input type="text" onChange={(e) => setBuySellAmount(e.target.value)} className="amount" id="amount" />
-
                             <select id="selectBS" className={(buySell === "sell") ? "sell" : "buy"} onChange={(e) => setBuySell(e.target.value)} >
                                 <option value="buy" className="buy">Buy</option>
                                 <option value="sell" className="sell">Sell</option>
