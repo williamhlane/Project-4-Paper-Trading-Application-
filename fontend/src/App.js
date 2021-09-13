@@ -6,20 +6,19 @@ import Portfolio from './componite/PortFolio';
 //This is the log in form, it will be shown if the user is not logged in.
 import Login from './componite/Login';
 import { useState } from 'react';
-import { useCookies } from "react-cookie";
+//import { useCookies } from "react-cookie";
 /////////////////////////////////////////////////////////////
-/////////TODO LIST//IN ORDER//DELETE LOST AFTER DEVELOPMENT IS DONE
-//NEED TO GRAPH STOCKS OWNED
+/////////TODO LIST//IN ORDER//DELETE this AFTER DEVELOPMENT IS DONE
+//NEED TO Set value of stock under the list 
 //NEED TO BUY AND SELL STOCKS
 //DELETE COOKIE IS NOT WORKING
 //NEED TO BE ABLE TO RESET USERS//done not tested
 ////////////////////////////////////////////////////////////
 let loggedIn = 0;
 let loggedInAs;
-let stocksObject;
 let balance;
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies(["connect.sid"]);//Delete cookie is not working on logout
+  //const [cookies, setCookie, removeCookie] = useCookies(["connect.sid"]);//Delete cookie is not working on logout
   const [appState, setAppState] = useState();//appState is an object that store the logged authenticate and username.
   const [stockSelected, setStockSelected] = useState();
   const [stockSelectedPrice, setStockSelectedPrice] = useState();
@@ -33,16 +32,17 @@ function App() {
   const [chartLabels, setChartLabel] = useState();//This useState will store the chart label information.
   const [chartData, setChartData] = useState();//This use state will store the chart data information.
   const [stockSym, setStockSym] = useState();//This use state will store the stocksymbol
+  const apiKey = "";
   //This is the graph and search componite. Here you will be able to search for a stock and view the graph.
   const getStockHistory = async (stockSymbol) => {
-    setStockSym(setStockSym);
+     setStockSym(stockSymbol);
     //We want stock symbols only, no spaces, all spaces will be removed if one is entered by mistake
     stockSymbol = stockSymbol.replace(/ /g, "");
     if (stockSymbol.length === 0) {
       //An error needs to be sent to the user prompting them to fill out the text box to search.
       alert("Nothing was entered in the search box.");
     } else {
-      const apiKey = "ck1t2okg5ZL3hdWRAHzH";
+      
       //When the user they will hit enter and it will replace any stock name with this until the promise returns good or bad.
       setStockName("Loading please wait.");
       setStockSelected(stockSymbol);
@@ -54,7 +54,6 @@ function App() {
           //put in a useState at the end, the stockData array will do the same thing just with the data.
           let labels = [];
           let stockData = [];
-          let lastNum;
           for (let i = 0; i < data.dataset.data.length; i++) {
             ///DATE: console.log(data.dataset.data[i][0]);
             //CLOSING: console.log(data.dataset.data[i][4]);
@@ -62,9 +61,8 @@ function App() {
             labels.push(data.dataset.data[i][0]);
             //This will put the closing stock prices in an array so we can draw the graph with them.
             stockData.push(data.dataset.data[i][4]);
-            lastNum = i;
           }
-          setStockSelectedPrice(data.dataset.data[lastNum][4]);
+          setStockSelectedPrice(data.dataset.data[0][4]);
           //Use useState for the label and graph array
           setChartLabel(labels);
           setChartData(stockData);
@@ -83,7 +81,8 @@ function App() {
     loggedIn = (appState.authenticated === "true");
     loggedInAs = appState.username;
     balance = appState.balance;
-    //stocksObject = appState.stocks;
+    //console.log(JSON.stringify(appState));
+    
   } else {
     fetch('http://localhost:3001/users/login', {
       method: 'GET',
@@ -103,7 +102,7 @@ function App() {
   }
   const logOut = () => {
 
-    removeCookie('connect.sid');//Cookie is not getting deleted need to research why.
+    //removeCookie('connect.sid');//Cookie is not getting deleted need to research why.
     fetch('http://localhost:3001/users/logout', { mode: 'cors', credentials: 'include' })
       .then(() => { window.location.reload(); })
       .catch((error) => { console.log(`Log out error: ${error}`) })
@@ -159,8 +158,11 @@ function App() {
       </header>
       {loggedIn ? <GandS chartLabels={chartLabels} chartData={chartData}
         stockName={stockName} getStockHistory={getStockHistory} setStart={setStart} setEnd={setEnd}
-        startDataDate={startDataDate} endDataDate={endDataDate} /> : <Login setAppState={setAppState} stockSym={stockSym} />}
-      {loggedIn ? <Portfolio setStockSelected={setStockSelected} stockSelected={stockSelected} balance={balance} /> : null}
+        startDataDate={startDataDate} endDataDate={endDataDate} stockSym={stockSym} /> : <Login setAppState={setAppState} stockSym={stockSym} />}
+      {loggedIn ? <Portfolio setStockSelected={setStockSelected} 
+                  stockSelected={stockSelected} balance={balance} getStockHistory={getStockHistory} 
+                  stocksObject={appState.stocksOwned} apiKey={apiKey} loggedInAs={loggedInAs} stockSelectedPrice={stockSelectedPrice} /> 
+                  : null}
     </div>
   );
 }

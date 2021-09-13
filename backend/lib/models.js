@@ -14,12 +14,25 @@ const Users = db.define('Users', {
         type: DataTypes.BIGINT,
         allowNull: true
     },
-    stocksOwned: {
+},{
+    /////////////////////////////////
+});
+const Portflio = db.define('Portflio', {
+    username: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    stockName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    amountOwned:{
+        type: DataTypes.BIGINT,
         allowNull: true
-    }
+    },
 },{
     /////////////////////////////////
 });
 db.sync();
 module.exports.Users = Users;
+module.exports.Portflio = Portflio;

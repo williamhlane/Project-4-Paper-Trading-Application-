@@ -1,8 +1,5 @@
-import { useState } from 'react';
 import { Line } from 'react-chartjs-2';
-/*{ setStockSelected, setStockSelectedPrice, stockSelected }*/
-const GandS = ({chartLabels, chartData, stockName, getStockHistory,setStart, setEnd, startDataDate, endDataDate, stockSym}) => {
-  
+const GandS = ({chartLabels, chartData, stockName, getStockHistory,setStart, setEnd, startDataDate, endDataDate, stockSym }) => {
     const options = {
         maintainAspectRatio: true,
         scales: {
@@ -26,7 +23,7 @@ const GandS = ({chartLabels, chartData, stockName, getStockHistory,setStart, set
     }
     return (
         <div id="left">
-            <input className="search" type="search" onKeyDown={(e) => { if (e.key === 'Enter') { getStockHistory(e.target.value) } }} />
+            <input className="search" type="search"  onKeyDown={(e) => { if (e.key === 'Enter') { getStockHistory(e.target.value) } }} />
             <input type="date" onChange={(e) => { setStart(e.target.value) }} />
             <input type="date" onChange={(e) => { setEnd(e.target.value) }} />
             <div>
